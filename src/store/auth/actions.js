@@ -42,45 +42,30 @@ export default {
           email: payload.email,
           password: payload.password,
         });
-        console.log(response.data);
+        context.commit("setUser", {
+          token: response.data,
+        });
+        localStorage.setItem("token", `${response.data}`);
       } catch (error) {
+        console.log(error);
         throw new Error(error.response.data);
       }
     }
   },
-  tryLogin(context) {
-    // const token = localStorage.getItem("token");
-    // const userId = localStorage.getItem("userId");
-    // const tokenExpiration = localStorage.getItem("tokenExpiration");
-    // const expiresIn = +tokenExpiration - new Date().getTime();
-    // if (expiresIn < 0) {
-    //   return;
-    // }
-    // timer = setTimeout(() => {
-    //   context.dispatch("autoLogout");
-    // }, expiresIn);
-    // if (token && userId) {
-    //   context.commit("setUser", {
-    //     token,
-    //     userId,
-    //     tokenExpiration: null,
-    //   });
-    // }
+  async tryLogin(context, payload) {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      context.commit("setUser", {
+        token,
+      });
+    }
   },
-  // logout(context) {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("userId");
-  //   localStorage.removeItem("tokenExpiration");
+  logout(context) {
+    localStorage.removeItem("token");
 
-  //   clearTimeout(timer);
-
-  //   context.commit("setUser", {
-  //     token: null,
-  //     userId: null,
-  //   });
-  // },
-  // autoLogout(context) {
-  //   context.dispatch("logout");
-  //   context.commit("setAutoLogout");
-  // },
+    context.commit("setUser", {
+      token: null,
+    });
+  },
 };

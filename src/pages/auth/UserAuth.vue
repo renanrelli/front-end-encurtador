@@ -136,6 +136,9 @@ export default {
       try {
         if (this.mode === "login") {
           await this.$store.dispatch("login", actionPayload);
+
+          const redirectUrl = "/";
+          this.$router.replace(redirectUrl);
         } else {
           await this.$store.dispatch("signup", actionPayload);
           this.registerSuccess = true;
