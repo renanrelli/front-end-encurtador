@@ -40,6 +40,17 @@
           long). If you trying register, enter a valid name also.
         </div>
       </article>
+      <article v-show="error !== null" class="message is-danger">
+        <div class="message-body">
+          {{ error }}
+        </div>
+      </article>
+      <article v-show="registerSuccess" class="message is-primary">
+        <div class="message-body">
+          You have <strong>successfully</strong> registered! Now log in
+        </div>
+      </article>
+
       <div class="field is-flex is-grouped is-justify-content-center">
         <p class="control">
           <button @click="submitForm" class="button is-success is-light">
@@ -77,6 +88,7 @@ export default {
       mode: "login",
       isLoading: false,
       error: null,
+      registerSuccess: false,
     };
   },
   computed: {
@@ -98,6 +110,7 @@ export default {
   methods: {
     async submitForm() {
       this.formIsValid = true;
+      this.error = null;
       if (this.mode === "signup" && this.name.length < 3) {
         this.formIsValid = false;
         return;
@@ -118,6 +131,18 @@ export default {
 
       if (this.mode === "signup") {
         actionPayload.name = this.name;
+      }
+
+      try {
+        if (this.mode === "login") {
+          await this.$store.dispatch("login", actionPayload);
+        } else {
+          await this.$store.dispatch("signup", actionPayload);
+          this.registerSuccess = true;
+          setTimeout(() => (this.registerSuccess = false), 5000);
+        }
+      } catch (error) {
+        this.error = error.message;
       }
     },
     switchAuthMode() {
