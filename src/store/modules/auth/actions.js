@@ -1,10 +1,8 @@
 import axios from "axios";
-const apiUrl = import.meta.env.VITE_MY_ENV_VARIABLE;
-let timer;
+const apiUrl = import.meta.env.VITE_MY_ENV_BASE_URL_API;
 
 export default {
   login(context, payload) {
-    console.log(apiUrl);
     return context.dispatch("auth", {
       ...payload,
       mode: "login",
@@ -36,7 +34,6 @@ export default {
         throw new Error(error.response.data.message);
       }
     } else {
-      console.log(url);
       try {
         const response = await axios.post(url, {
           email: payload.email,
@@ -47,7 +44,6 @@ export default {
         });
         localStorage.setItem("token", `${response.data}`);
       } catch (error) {
-        console.log(error);
         throw new Error(error.response.data);
       }
     }

@@ -1,81 +1,73 @@
 <template>
-  <div class="container">
-    <form @submit.prevent class="form">
-      <div class="field" v-if="mode === `signup`">
-        <p class="control has-icons-left has-icons-right">
-          <input
-            class="input"
-            type="text"
-            placeholder="Your name"
-            v-model.trim="name"
-            required
-          />
-        </p>
-      </div>
-      <div class="field">
-        <p class="control has-icons-left has-icons-right">
-          <input
-            class="input"
-            type="email"
-            placeholder="Email"
-            v-model.trim="email"
-            required
-          />
-        </p>
-      </div>
-      <div class="field">
-        <p class="control has-icons-left">
-          <input
-            class="input"
-            type="password"
-            placeholder="Password"
-            v-model.trim="password"
-            required
-          />
-        </p>
-      </div>
-      <article v-show="!formIsValid" class="message is-danger">
-        <div class="message-body">
-          Please enter a valid email and password (must be at least 6 characters
-          long). If you trying register, enter a valid name also.
+  <main>
+    <div class="container">
+      <form @submit.prevent class="form">
+        <div class="field" v-if="mode === `signup`">
+          <p class="control has-icons-left has-icons-right">
+            <input
+              class="input"
+              type="text"
+              placeholder="Your name"
+              v-model.trim="name"
+              required
+            />
+          </p>
         </div>
-      </article>
-      <article v-show="error !== null" class="message is-danger">
-        <div class="message-body">
-          {{ error }}
+        <div class="field">
+          <p class="control">
+            <input
+              class="input"
+              type="email"
+              placeholder="Email"
+              v-model.trim="email"
+              required
+            />
+          </p>
         </div>
-      </article>
-      <article v-show="registerSuccess" class="message is-primary">
-        <div class="message-body">
-          You have <strong>successfully</strong> registered! Now log in
+        <div class="field">
+          <p class="control">
+            <input
+              class="input"
+              type="password"
+              placeholder="Password"
+              v-model.trim="password"
+              required
+            />
+          </p>
         </div>
-      </article>
+        <article v-show="!formIsValid" class="message is-danger">
+          <div class="message-body">
+            Please enter a valid email and password (must be at least 6
+            characters long). If you trying register, enter a valid name also.
+          </div>
+        </article>
+        <article v-show="error !== null" class="message is-danger">
+          <div class="message-body">
+            {{ error }}
+          </div>
+        </article>
+        <article v-show="registerSuccess" class="message is-primary">
+          <div class="message-body">
+            You have <strong>successfully</strong> registered! Now log in
+          </div>
+        </article>
 
-      <div class="field is-flex is-grouped is-justify-content-center">
-        <p class="control">
-          <button @click="submitForm" class="button is-success is-light">
-            {{ submitButtonCaption }}
-          </button>
-          <button @click="switchAuthMode" class="button is-info is-light">
-            {{ switchModeButtonCaption }}
-          </button>
-        </p>
-      </div>
-    </form>
-  </div>
+        <div class="field is-flex is-grouped is-justify-content-center">
+          <div>
+            <button @click="submitForm" class="button is-success is-light">
+              {{ submitButtonCaption }}
+            </button>
+          </div>
+          <div>
+            <button @click="switchAuthMode" class="button is-info is-light">
+              {{ switchModeButtonCaption }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
 </template>
-
-<style scoped>
-.container {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.form {
-  width: 400px;
-}
-</style>
 
 <script>
 export default {
@@ -136,7 +128,6 @@ export default {
       try {
         if (this.mode === "login") {
           await this.$store.dispatch("login", actionPayload);
-
           const redirectUrl = "/";
           this.$router.replace(redirectUrl);
         } else {
@@ -158,3 +149,21 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+main {
+  background-color: #e0e0e0;
+}
+.is-grouped {
+  gap: 12px;
+}
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.form {
+  width: 400px;
+}
+</style>

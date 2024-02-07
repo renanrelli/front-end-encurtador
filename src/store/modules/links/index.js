@@ -4,7 +4,13 @@ import getters from "./getters";
 
 export default {
   state() {
-    return {};
+    return {
+      arrayLinks: [],
+      stats: {
+        totalViews: null,
+        linksQuantity: null,
+      },
+    };
   },
   mutations,
   actions,
