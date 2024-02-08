@@ -31,7 +31,11 @@
               />
             </div>
             <div class="icons-crud">
-              <font-awesome-icon class="icons-card" :icon="['fas', 'copy']" />
+              <font-awesome-icon
+                class="icons-card"
+                @click="copyToClipboard(link.shortenedUrl)"
+                :icon="['fas', 'copy']"
+              />
               <font-awesome-icon
                 class="icons-card"
                 :icon="['fas', 'pen-to-square']"
@@ -52,6 +56,9 @@
 <script>
 import BaseCard from "../ui/BaseCard.vue";
 import RemoveLinkModal from "../modal/RemoveLinkModal.vue";
+import { useToast } from "vue-toastification";
+const apiUrl = import.meta.env.VITE_MY_ENV_BASE_URL;
+
 export default {
   data() {
     return {
@@ -72,6 +79,11 @@ export default {
     openModal(idx) {
       this.showModal = true;
       this.idToRemove = idx;
+    },
+    async copyToClipboard(url) {
+      await navigator.clipboard.writeText(`${apiUrl}` + url);
+      const toast = useToast();
+      toast("Link copy to clipboard!");
     },
   },
 };

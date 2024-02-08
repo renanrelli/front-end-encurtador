@@ -19,6 +19,9 @@
 
 <script>
 import BaseModal from "./BaseModal.vue";
+import { useToast } from "vue-toastification";
+const toast = useToast();
+
 export default {
   components: {
     BaseModal,
@@ -39,7 +42,7 @@ export default {
       try {
         const response = await this.$store.dispatch("removeLink", this.id);
         if (response.status === 204) {
-          alert("Link successfully removed!");
+          toast.error("Link removed!");
           this.$emit("close");
           this.$store.dispatch("getLinks");
         }

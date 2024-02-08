@@ -58,7 +58,7 @@
             />
           </div>
           <p v-show="!originalUrlIsValid" class="help is-danger">
-            Please enter a original with https://
+            Please enter a link with https://
           </p>
         </div>
       </section>
@@ -72,6 +72,8 @@
 
 <script>
 import BaseModal from "./BaseModal.vue";
+import { useToast } from "vue-toastification";
+const toast = useToast();
 export default {
   components: {
     BaseModal,
@@ -106,9 +108,14 @@ export default {
       }
 
       if (!this.originalUrl.includes("https://")) {
+        console.log(`teste`);
         this.originalUrlIsValid = false;
       }
-      if (this.titleIsValid && this.shortUrlIsValid && this.originalUrl) {
+      if (
+        this.titleIsValid &&
+        this.shortUrlIsValid &&
+        this.originalUrlIsValid
+      ) {
         let payload = {
           originalUrl: this.originalUrl,
           title: this.title,
@@ -119,10 +126,14 @@ export default {
         try {
           const response = await this.$store.dispatch("addLink", payload);
           console.log(response);
-          alert("You create a new short link!");
+          toast.success("You create a new short link!");
           this.closeModal();
+          this.$store.dispatch("getLinks");
         } catch (error) {
-          alert("Something gone wrong! Try again in a couple of seconds...");
+          throw new Error(
+            error.message ||
+              `Something gone wrong! Try again in a couple of seconds`
+          );
         }
       }
     },

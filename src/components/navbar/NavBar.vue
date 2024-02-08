@@ -53,6 +53,8 @@ export default {
       this.$router.replace(redirectUrl);
     },
     openModal() {
+      let teste = `ola`;
+      navigator.clipboard.writeText(teste);
       this.showModal = true;
     },
   },
