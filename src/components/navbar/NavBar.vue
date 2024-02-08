@@ -12,16 +12,22 @@
     </div>
 
     <div class="navbar-item">
-      <font-awesome-icon :icon="['fas', 'magnifying-glass']" class="icons" />
+      <font-awesome-icon
+        @click="setLinksWithFilterByText"
+        :icon="['fas', 'magnifying-glass']"
+        class="icons is-clickable"
+      />
       <input
         class="input is-small"
         type="text"
         placeholder="Search or paste URL"
+        v-model="searchInput"
+        @keyup.enter="setLinksWithFilterByText"
       />
       <font-awesome-icon
         @click="openModal"
         :icon="['fas', 'plus']"
-        class="icons add-icon"
+        class="icons is-clickable"
       />
     </div>
 
@@ -44,6 +50,8 @@ export default {
   data() {
     return {
       showModal: false,
+      searchInput: "",
+      searchTimer: null,
     };
   },
   methods: {
@@ -53,9 +61,10 @@ export default {
       this.$router.replace(redirectUrl);
     },
     openModal() {
-      let teste = `ola`;
-      navigator.clipboard.writeText(teste);
       this.showModal = true;
+    },
+    setLinksWithFilterByText() {
+      this.$store.dispatch("filterLink", this.searchInput);
     },
   },
 };
@@ -85,8 +94,14 @@ input::placeholder {
 .navbar-item:not(:first-child):not(:last-child) {
   gap: 12px;
 }
-.add-icon {
+.icons {
   padding: 4px;
   cursor: pointer;
+  color: #8f8f8f;
+  opacity: 0.6;
+}
+.icons:hover {
+  color: #373737;
+  opacity: 1;
 }
 </style>

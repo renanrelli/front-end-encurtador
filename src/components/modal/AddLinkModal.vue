@@ -19,7 +19,7 @@
             />
           </div>
           <p v-show="!titleIsValid" class="help is-danger">
-            Please enter a valid title!
+            Please enter a title with 6 characteres at least!
           </p>
         </div>
 
@@ -97,7 +97,7 @@ export default {
       this.shortUrlIsValid = true;
       this.originalUrlIsValid = true;
 
-      if (this.title.length < 3) {
+      if (this.title.length < 6) {
         this.titleIsValid = false;
       }
 
@@ -125,7 +125,6 @@ export default {
         }
         try {
           const response = await this.$store.dispatch("addLink", payload);
-          console.log(response);
           toast.success("You create a new short link!");
           this.closeModal();
           this.$store.dispatch("getLinks");

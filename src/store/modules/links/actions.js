@@ -14,7 +14,18 @@ export default {
     });
     context.commit("setLinks", response.data);
   },
-
+  async filterLink({ getters, commit, dispatch }, payload) {
+    if (payload === ``) {
+      await dispatch("getLinks");
+    }
+    const links = getters.links;
+    const filteredLinks = links.filter(
+      (link) =>
+        link.title.toLowerCase().includes(payload.toLowerCase()) ||
+        `http://localhost:8000/${link.shortenedUrl}` === payload
+    );
+    commit("setLinks", filteredLinks);
+  },
   async getStatsLinks(context) {
     const token = localStorage.getItem("token");
     const response = await axios.get("/links/total", {
@@ -28,6 +39,7 @@ export default {
     };
     context.commit("setStatsLinks", payload);
   },
+
   async addLink(_, payload) {
     try {
       const token = localStorage.getItem("token");
@@ -63,7 +75,6 @@ export default {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.statusText);
       return response.statusText;
     } catch (error) {
       return error.response.statusText;
