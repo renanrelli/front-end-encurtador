@@ -54,4 +54,19 @@ export default {
       throw new Error(error);
     }
   },
+  async editLink(_, payload) {
+    let { id, ...newPayload } = payload;
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(`/links/${id}`, newPayload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.statusText);
+      return response.statusText;
+    } catch (error) {
+      return error.response.statusText;
+    }
+  },
 };

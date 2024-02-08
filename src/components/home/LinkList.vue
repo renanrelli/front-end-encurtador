@@ -1,10 +1,34 @@
 <template>
   <div>
-    <div v-if="showModal">
+    <div class="is-flex is-justify-content-end is-align-items-center mb-6">
+      <p class="mr-2">Filter by</p>
+      <font-awesome-icon
+        class="icons-filter"
+        :icon="['fas', 'arrow-down-wide-short']"
+        v-if="showIconByAsc"
+        @click="toggleShowIcon"
+      />
+      <font-awesome-icon
+        class="icons-filter"
+        v-if="showIconByDesc"
+        :icon="['fas', 'arrow-up-wide-short']"
+        @click="toggleShowIcon"
+      />
+    </div>
+    <div v-if="showRemoveModal">
       <remove-link-modal
         :id="this.idToRemove"
-        @close="showModal = false"
+        @close="showRemoveModal = false"
       ></remove-link-modal>
+    </div>
+    <div v-if="showEditModal">
+      <edit-link-modal
+        :linkTitle="this.linkEditProps.title"
+        :linkOriginalUrl="this.linkEditProps.originalUrl"
+        :linkId="this.linkEditProps.id"
+        :linkShortUrl="this.linkEditProps.shortenedUrl"
+        @close="showEditModal = false"
+      ></edit-link-modal>
     </div>
     <div v-for="link in links" :key="link">
       <base-card>
@@ -38,10 +62,18 @@
               />
               <font-awesome-icon
                 class="icons-card"
+                @click="
+                  setLinkEditProps({
+                    title: link.title,
+                    id: link.id,
+                    shortenedUrl: link.shortenedUrl,
+                    originalUrl: link.originalUrl,
+                  })
+                "
                 :icon="['fas', 'pen-to-square']"
               />
               <font-awesome-icon
-                @click="openModal(link.id)"
+                @click="openRemoveModal(link.id)"
                 class="icons-card"
                 :icon="['fas', 'trash']"
               />
@@ -56,34 +88,64 @@
 <script>
 import BaseCard from "../ui/BaseCard.vue";
 import RemoveLinkModal from "../modal/RemoveLinkModal.vue";
+import EditLinkModal from "../modal/EditLinkModal.vue";
 import { useToast } from "vue-toastification";
 const apiUrl = import.meta.env.VITE_MY_ENV_BASE_URL;
 
 export default {
   data() {
     return {
-      showModal: false,
+      showEditModal: false,
+      showRemoveModal: false,
       idToRemove: null,
+      showIconByAsc: true,
+      showIconByDesc: false,
+      linkEditProps: {
+        title: null,
+        id: null,
+        shortenedUrl: null,
+        originalUrl: null,
+      },
     };
   },
   components: {
     BaseCard,
     RemoveLinkModal,
+    EditLinkModal,
   },
   computed: {
     links() {
-      return this.$store.getters.links;
+      const links = this.$store.getters.links;
+      if (this.showIconByAsc) {
+        return links.sort((a, b) => a.views_quantity - b.views_quantity);
+      } else {
+        return links.sort((a, b) => b.views_quantity - a.views_quantity);
+      }
     },
   },
   methods: {
-    openModal(idx) {
-      this.showModal = true;
+    openRemoveModal(idx) {
+      this.showRemoveModal = true;
       this.idToRemove = idx;
+    },
+    setLinkEditProps(payload) {
+      this.linkEditProps.title = payload.title;
+      this.linkEditProps.id = payload.id;
+      this.linkEditProps.shortenedUrl = payload.shortenedUrl;
+      this.linkEditProps.originalUrl = payload.originalUrl;
+      this.openEditModal();
+    },
+    openEditModal() {
+      this.showEditModal = true;
     },
     async copyToClipboard(url) {
       await navigator.clipboard.writeText(`${apiUrl}` + url);
       const toast = useToast();
       toast("Link copy to clipboard!");
+    },
+    toggleShowIcon() {
+      this.showIconByAsc = !this.showIconByAsc;
+      this.showIconByDesc = !this.showIconByDesc;
     },
   },
 };
@@ -101,9 +163,20 @@ export default {
   width: 20px;
   opacity: 0.6;
 }
+.icons-crud > :hover {
+  opacity: 1;
+}
 .icons-crud {
   display: flex;
   gap: 16px;
+  cursor: pointer;
+}
+.icons-filter {
+  height: 20px;
+  opacity: 0.6;
+}
+.icons-filter:hover {
+  opacity: 1;
   cursor: pointer;
 }
 </style>
