@@ -3,7 +3,7 @@
     <div class="container">
       <form @submit.prevent class="form">
         <div class="field" v-if="mode === `signup`">
-          <p class="control has-icons-left has-icons-right">
+          <p class="control">
             <input
               class="input"
               type="text"

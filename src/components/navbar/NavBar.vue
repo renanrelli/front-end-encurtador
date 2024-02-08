@@ -2,7 +2,6 @@
   <div v-if="showModal">
     <add-link-modal @close="showModal = false"></add-link-modal>
   </div>
-
   <nav
     class="navbar is-flex is-align-items-center is-justify-content-space-between p-2"
     role="navigation"
@@ -20,7 +19,7 @@
         placeholder="Search or paste URL"
       />
       <font-awesome-icon
-        @click="teste"
+        @click="openModal"
         :icon="['fas', 'plus']"
         class="icons add-icon"
       />
@@ -53,8 +52,8 @@ export default {
       const redirectUrl = "/auth";
       this.$router.replace(redirectUrl);
     },
-    teste() {
-      this.showModal = !this.showModal;
+    openModal() {
+      this.showModal = true;
     },
   },
 };
