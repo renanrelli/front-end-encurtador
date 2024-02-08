@@ -12,7 +12,6 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data);
     context.commit("setLinks", response.data);
   },
 
@@ -29,7 +28,7 @@ export default {
     };
     context.commit("setStatsLinks", payload);
   },
-  async addLink(context, payload) {
+  async addLink(_, payload) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post("/links", payload, {
@@ -40,6 +39,19 @@ export default {
       return response;
     } catch (error) {
       console.log(error);
+    }
+  },
+  async removeLink(_, payload) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`/links/${payload}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response;
+    } catch (error) {
+      throw new Error(error);
     }
   },
 };

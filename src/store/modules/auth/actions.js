@@ -16,13 +16,13 @@ export default {
   },
   async auth(context, payload) {
     const mode = payload.mode;
-    let url = `${apiUrl}login`;
+    let url = `${apiUrl}/login`;
     const headers = {
       "Content-Type": "application/json",
     };
 
     if (mode === "signup") {
-      url = `${apiUrl}register`;
+      url = `${apiUrl}/register`;
       try {
         const response = await axios.post(url, {
           Headers: headers,
