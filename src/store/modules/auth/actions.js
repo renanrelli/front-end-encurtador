@@ -1,6 +1,5 @@
 import axios from "axios";
-const apiUrl =
-  "https://api-link-kine5nbgv-renan-rellis-projects.vercel.app/api/api/";
+const apiUrl = import.meta.env.VITE_MY_ENV_BASE_URL_API;
 
 export default {
   login(context, payload) {
