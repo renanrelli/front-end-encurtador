@@ -28,6 +28,7 @@ export default {
     BaseModal,
   },
   props: [`id`],
+  emits: ["close"],
   data() {
     return {
       isLoading: false,

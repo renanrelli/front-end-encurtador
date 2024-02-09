@@ -50,6 +50,7 @@ export default {
   },
   data() {
     return {
+      fullPage: true,
       isLoading: false,
       showModal: false,
       searchInput: "",

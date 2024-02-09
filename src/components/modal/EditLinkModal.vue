@@ -76,6 +76,7 @@ export default {
   components: {
     BaseModal,
   },
+  emits: ["close"],
   data() {
     return {
       titleIsValid: true,

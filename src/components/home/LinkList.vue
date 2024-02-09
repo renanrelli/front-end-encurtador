@@ -7,7 +7,7 @@
       <div>
         <font-awesome-icon
           @click="refreshList"
-          class="icons-filter"
+          class="icons-filter teste"
           :icon="['fas', 'arrows-rotate']"
         />
       </div>
