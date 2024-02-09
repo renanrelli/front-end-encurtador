@@ -54,7 +54,7 @@
           <div>
             <h2 class="is-size-3">{{ link.title }}</h2>
             <a
-              v-bind:href="'http://localhost:8000/' + link.shortenedUrl"
+              v-bind:href="baseUrl + link.shortenedUrl"
               target="_blank"
               class="has-text-link is-size-6"
               >localhost:8000/{{ link.shortenedUrl }}</a
@@ -107,6 +107,7 @@ import RemoveLinkModal from "../modal/RemoveLinkModal.vue";
 import EditLinkModal from "../modal/EditLinkModal.vue";
 import { useToast } from "vue-toastification";
 const apiUrl = import.meta.env.VITE_MY_ENV_BASE_URL;
+const baseUrl = import.meta.env.VITE_MY_ENV_BASE_URL;
 
 export default {
   data() {
@@ -139,6 +140,9 @@ export default {
       } else {
         return links.sort((a, b) => b.views_quantity - a.views_quantity);
       }
+    },
+    baseUrl() {
+      return baseUrl;
     },
   },
   methods: {
