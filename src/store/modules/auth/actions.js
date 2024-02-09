@@ -31,8 +31,7 @@ export default {
           password: payload.password,
         });
       } catch (error) {
-        return Error(error.response);
-        // throw new Error(error.response.data.message);
+        throw new Error(error.response);
       }
     } else {
       try {
