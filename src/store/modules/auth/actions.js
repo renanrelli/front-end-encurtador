@@ -18,8 +18,13 @@ export default {
   async auth(context, payload) {
     const mode = payload.mode;
     let url = `${apiUrl}/login`;
+    console.log(url);
     const headers = {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers":
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization",
     };
 
     if (mode === "signup") {
