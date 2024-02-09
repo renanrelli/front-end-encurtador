@@ -133,10 +133,9 @@ export default {
         } else {
           await this.$store.dispatch("signup", actionPayload);
           this.registerSuccess = true;
-          setTimeout(() => (this.registerSuccess = false), 5000);
         }
       } catch (error) {
-        this.error = error.message;
+        this.error = "Something gone wrong! Try again in a couple of minutes!";
       }
     },
     switchAuthMode() {

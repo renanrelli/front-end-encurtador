@@ -35,12 +35,6 @@ export default {
       return this.$store.getters.statsLinks;
     },
   },
-  methods: {
-    show() {
-      console.log(this.$store.getters.links);
-      console.log(this.$store.getters.statsLinks);
-    },
-  },
 };
 </script>
 
