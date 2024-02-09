@@ -1,19 +1,35 @@
 <template>
   <div>
-    <div class="is-flex is-justify-content-end is-align-items-center mb-6">
-      <p class="mr-2">Filter by</p>
-      <font-awesome-icon
-        class="icons-filter"
-        :icon="['fas', 'arrow-down-wide-short']"
-        v-if="showIconByAsc"
-        @click="toggleShowIcon"
-      />
-      <font-awesome-icon
-        class="icons-filter"
-        v-if="showIconByDesc"
-        :icon="['fas', 'arrow-up-wide-short']"
-        @click="toggleShowIcon"
-      />
+    <loading
+      v-model:active="isLoading"
+      :on-cancel="onCancel"
+      :is-full-page="fullPage"
+    />
+    <div
+      class="is-flex is-justify-content-space-between is-align-items-center mb-6"
+    >
+      <div>
+        <font-awesome-icon
+          @click="refreshList"
+          class="icons-filter"
+          :icon="['fas', 'arrows-rotate']"
+        />
+      </div>
+      <div class="is-flex -is-alignm-items-center">
+        <p class="mr-2">Filter by</p>
+        <font-awesome-icon
+          class="icons-filter"
+          :icon="['fas', 'arrow-down-wide-short']"
+          v-if="showIconByAsc"
+          @click="toggleShowIcon"
+        />
+        <font-awesome-icon
+          class="icons-filter"
+          v-if="showIconByDesc"
+          :icon="['fas', 'arrow-up-wide-short']"
+          @click="toggleShowIcon"
+        />
+      </div>
     </div>
     <div v-if="showRemoveModal">
       <remove-link-modal
@@ -95,6 +111,8 @@ const apiUrl = import.meta.env.VITE_MY_ENV_BASE_URL;
 export default {
   data() {
     return {
+      isLoading: false,
+      fullPage: true,
       showEditModal: false,
       showRemoveModal: false,
       idToRemove: null,
@@ -124,6 +142,12 @@ export default {
     },
   },
   methods: {
+    async refreshList() {
+      this.isLoading = true;
+      await this.$store.dispatch("getLinks");
+      await this.$store.dispatch("getStatsLinks");
+      this.isLoading = false;
+    },
     openRemoveModal(idx) {
       this.showRemoveModal = true;
       this.idToRemove = idx;

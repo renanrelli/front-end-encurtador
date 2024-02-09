@@ -6,11 +6,11 @@ import { createApp } from "vue";
 import "./scss/main.scss";
 import store from "./store/index.js";
 import router from "./router.js";
-import vClickOutside from "v-click-outside";
 import App from "./App.vue";
-import BaseSpinner from "./components/ui/BaseSpinner.vue";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/css/index.css";
 
 library.add(fas, fab);
 
@@ -21,11 +21,9 @@ app.use(Toast, {
   maxToasts: 20,
   newestOnTop: true,
 });
-app.use(vClickOutside);
 app.component("font-awesome-icon", FontAwesomeIcon);
+app.component("loading", Loading);
 app.use(router);
 app.use(store);
-
-app.component("base-spinner", BaseSpinner);
 
 app.mount("#app");

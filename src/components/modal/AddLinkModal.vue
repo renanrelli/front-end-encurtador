@@ -1,4 +1,9 @@
 <template>
+  <loading
+    v-model:active="isLoading"
+    :on-cancel="onCancel"
+    :is-full-page="fullPage"
+  />
   <base-modal @close="closeModal">
     <div class="modal-card">
       <header class="modal-card-head">
@@ -80,6 +85,8 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
+      fullPage: true,
       titleIsValid: true,
       shortUrlIsValid: true,
       originalUrlIsValid: true,
@@ -124,7 +131,10 @@ export default {
           payload.shortenedUrl = this.shortUrl;
         }
         try {
+          this.isLoading = true;
           const response = await this.$store.dispatch("addLink", payload);
+          await this.$store.dispatch("getStatsLinks");
+          this.isLoading = false;
           toast.success("You create a new short link!");
           this.closeModal();
           this.$store.dispatch("getLinks");

@@ -1,4 +1,9 @@
 <template>
+  <loading
+    v-model:active="isLoading"
+    :on-cancel="onCancel"
+    :is-full-page="fullPage"
+  />
   <base-modal @close="closeModal">
     <div class="modal-card">
       <header class="modal-card-head">
@@ -29,6 +34,8 @@ export default {
   props: [`id`],
   data() {
     return {
+      isLoading: false,
+      fullPage: true,
       titleIsValid: true,
       shortUrlIsValid: true,
       originalUrlIsValid: true,
@@ -39,12 +46,14 @@ export default {
       this.$emit("close");
     },
     async confirmRemove() {
+      this.isLoading = true;
       try {
         const response = await this.$store.dispatch("removeLink", this.id);
         if (response.status === 204) {
           toast.error("Link removed!");
           this.$emit("close");
-          this.$store.dispatch("getLinks");
+          await this.$store.dispatch("getLinks");
+          await this.$store.dispatch("getStatsLinks");
         }
       } catch (error) {
         this.$emit("close");
@@ -52,6 +61,7 @@ export default {
           error || `Something gone wrong! Try again in a few minutes`
         );
       }
+      this.isLoading = true;
     },
   },
 };
