@@ -41,6 +41,7 @@ export default {
     } else {
       try {
         const response = await axios.post(url, {
+          Headers: headers,
           email: payload.email,
           password: payload.password,
         });
