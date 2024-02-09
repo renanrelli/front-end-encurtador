@@ -1,6 +1,7 @@
 <template>
   <main>
     <div class="container">
+      <loading v-model:active="isLoading" :is-full-page="fullPage" />
       <form @submit.prevent class="form">
         <div class="field" v-if="mode === `signup`">
           <p class="control">
@@ -76,6 +77,8 @@ export default {
       name: "",
       email: "",
       password: "",
+      isLoading: false,
+      fullPage: true,
       formIsValid: true,
       mode: "login",
       isLoading: false,
@@ -124,7 +127,7 @@ export default {
       if (this.mode === "signup") {
         actionPayload.name = this.name;
       }
-
+      this.isLoading = true;
       try {
         if (this.mode === "login") {
           await this.$store.dispatch("login", actionPayload);
@@ -137,6 +140,7 @@ export default {
       } catch (error) {
         this.error = "Something gone wrong! Try again in a couple of minutes!";
       }
+      this.isLoading = false;
     },
     switchAuthMode() {
       if (this.mode === "login") {

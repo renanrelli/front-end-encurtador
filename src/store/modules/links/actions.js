@@ -15,9 +15,6 @@ export default {
     context.commit("setLinks", response.data);
   },
   async filterLink({ getters, commit, dispatch }, payload) {
-    if (payload === ``) {
-      await dispatch("getLinks");
-    }
     const links = getters.links;
     const filteredLinks = links.filter(
       (link) =>

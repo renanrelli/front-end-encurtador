@@ -1,9 +1,5 @@
 <template>
-  <loading
-    v-model:active="isLoading"
-    :on-cancel="onCancel"
-    :is-full-page="fullPage"
-  />
+  <loading v-model:active="isLoading" :is-full-page="fullPage" />
   <base-modal @close="closeModal">
     <div class="modal-card">
       <header class="modal-card-head">
@@ -83,6 +79,7 @@ export default {
   components: {
     BaseModal,
   },
+  emits: ["close"],
   data() {
     return {
       isLoading: false,

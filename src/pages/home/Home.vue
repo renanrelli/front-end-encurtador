@@ -1,10 +1,6 @@
 <template>
   <main>
-    <loading
-      v-model:active="isLoading"
-      :on-cancel="onCancel"
-      :is-full-page="fullPage"
-    />
+    <loading v-model:active="isLoading" :is-full-page="fullPage" />
     <nav-bar></nav-bar>
     <article class="container is-max-desktop mt-6">
       <stats class="mb-6"></stats>

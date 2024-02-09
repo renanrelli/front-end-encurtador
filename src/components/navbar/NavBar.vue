@@ -1,4 +1,5 @@
 <template>
+  <loading v-model:active="isLoading" :is-full-page="fullPage" />
   <div v-if="showModal">
     <add-link-modal @close="showModal = false"></add-link-modal>
   </div>
@@ -49,9 +50,9 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       showModal: false,
       searchInput: "",
-      searchTimer: null,
     };
   },
   methods: {
@@ -63,7 +64,12 @@ export default {
     openModal() {
       this.showModal = true;
     },
-    setLinksWithFilterByText() {
+    async setLinksWithFilterByText() {
+      if (this.searchInput === ``) {
+        this.isLoading = true;
+        await dispatch("getLinks");
+        this.isLoading = false;
+      }
       this.$store.dispatch("filterLink", this.searchInput);
     },
   },

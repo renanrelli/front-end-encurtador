@@ -1,10 +1,6 @@
 <template>
   <div>
-    <loading
-      v-model:active="isLoading"
-      :on-cancel="onCancel"
-      :is-full-page="fullPage"
-    />
+    <loading v-model:active="isLoading" :is-full-page="fullPage" />
     <div
       class="is-flex is-justify-content-space-between is-align-items-center mb-6"
     >
